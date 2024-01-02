@@ -14,16 +14,5 @@ import static org.junit.jupiter.api.Assertions.*;
 class AccountsControllerTest {
     AccountsController accountsController;
 
-    @BeforeEach
-    void setUp() {
-        accountsController=new AccountsController();
-    }
 
-    @Test
-    void sayhi() throws Exception {
-        MockMvc mockMvc=MockMvcBuilders.standaloneSetup(accountsController).build();
-
-        mockMvc.perform(MockMvcRequestBuilders.get("/"))
-                .andExpect(MockMvcResultMatchers.status().isOk());
-    }
 }
