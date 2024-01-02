@@ -1,0 +1,13 @@
+package com.skm.accounts.dto;
+
+import jakarta.persistence.Id;
+import lombok.AllArgsConstructor;
+import lombok.Data;
+
+@Data
+public class AccountsDto {
+    private Long accountNumber;
+    private String accountType;
+    private String branchAddress;
+
+}
