@@ -19,7 +19,8 @@ import java.time.LocalDateTime;
 import java.util.Optional;
 import java.util.Random;
 
-@Service @AllArgsConstructor
+@Service
+@AllArgsConstructor
 public class AccountsServiceImpl implements IAccountsService {
 
     private AccountsRepository accountsRepository;
@@ -31,15 +32,14 @@ public class AccountsServiceImpl implements IAccountsService {
 
     @Override
     public void createAccount(CustomerDto customerDto) {
-        Customer customer=CustomerMapper.mapToCustomer(customerDto,new Customer());
-        Optional<Customer> optionalCustomer=customerRepository.findByMobileNumber(customerDto.getMobileNumber());
-        if (optionalCustomer.isPresent()){
-            throw new CustomerAlreadyExistException("Customer already exist with given mobile number:"+
-                    customerDto.getMobileNumber());
+        Customer customer = CustomerMapper.mapToCustomer(customerDto, new Customer());
+        Optional<Customer> optionalCustomer = customerRepository.findByMobileNumber(customerDto.getMobileNumber());
+        if (optionalCustomer.isPresent()) {
+            throw new CustomerAlreadyExistException("Customer already exist with given mobile number:" + customerDto.getMobileNumber());
         }
         customer.setCreatedAt(LocalDateTime.now());
         customer.setCreatedBy("Anonymous");
-        Customer savedCustomer=customerRepository.save(customer);
+        Customer savedCustomer = customerRepository.save(customer);
         accountsRepository.save(createNewAccount(savedCustomer));
     }
 
@@ -48,10 +48,10 @@ public class AccountsServiceImpl implements IAccountsService {
      * @param customer
      * @return the new account details
      */
-    private Accounts createNewAccount(Customer customer){
-        Accounts newAccount=new Accounts();
+    private Accounts createNewAccount(Customer customer) {
+        Accounts newAccount = new Accounts();
         newAccount.setCustomerId(customer.getCustomerId());
-        long randomAccountNumber=1000000000L+new Random().nextInt(900000000);
+        long randomAccountNumber = 1000000000L + new Random().nextInt(900000000);
         newAccount.setAccountNumber(randomAccountNumber);
         newAccount.setAccountType(AccountsConstants.SAVINGS);
         newAccount.setBranchAddress(AccountsConstants.ADDRESS);
@@ -65,17 +65,40 @@ public class AccountsServiceImpl implements IAccountsService {
      */
     @Override
     public CustomerDto fetchAccount(String mobileNumber) {
-        Customer customer= customerRepository
-                .findByMobileNumber(mobileNumber)
-                .orElseThrow(
-                        ()-> new ResourceNotFoundException("Customer","Mobile number",mobileNumber));
-        Accounts accounts=accountsRepository
-                .findByCustomerId(customer.getCustomerId())
-                .orElseThrow(
-                        ()->new ResourceNotFoundException("Account","customerID",customer.getCustomerId().toString()));
-        CustomerDto customerDto=CustomerMapper.mapToCustomerDto(customer,new CustomerDto());
-        customerDto.setAccountsDto(AccountsMapper.mapToAccountsDto(accounts,new AccountsDto()));
+        Customer customer = customerRepository.findByMobileNumber(mobileNumber).orElseThrow(() -> new ResourceNotFoundException("Customer", "Mobile number", mobileNumber));
+        Accounts accounts = accountsRepository.findByCustomerId(customer.getCustomerId()).orElseThrow(() -> new ResourceNotFoundException("Account", "customerID", customer.getCustomerId().toString()));
+        CustomerDto customerDto = CustomerMapper.mapToCustomerDto(customer, new CustomerDto());
+        customerDto.setAccountsDto(AccountsMapper.mapToAccountsDto(accounts, new AccountsDto()));
         return customerDto;
 
+    }
+
+    /**
+     * @param customerDto
+     */
+    @Override
+    public boolean updateAccount(CustomerDto customerDto) {
+        boolean isUpdated = false;
+
+        AccountsDto accountsDto = customerDto.getAccountsDto();
+        if (accountsDto != null) {
+            Accounts accounts= accountsRepository
+                    .findById(accountsDto.getAccountNumber())
+                    .orElseThrow(
+                            ()->new ResourceNotFoundException("Accunt","Account number",accountsDto.getAccountNumber().toString())
+                    );
+            AccountsMapper.mapToAccounts(accountsDto,accounts);
+            accounts=accountsRepository.save(accounts);
+
+            Long customerId=accounts.getCustomerId();
+            Customer customer=customerRepository.findById(customerId)
+                    .orElseThrow(()->new ResourceNotFoundException("Customer","CustomerId",customerId.toString()));
+            CustomerMapper.mapToCustomer(customerDto,customer);
+            customerRepository.save(customer);
+            isUpdated=true;
+        }
+
+
+        return isUpdated;
     }
 }
