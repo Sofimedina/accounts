@@ -27,6 +27,7 @@ dependencies {
 	implementation("org.springframework.boot:spring-boot-starter-data-jpa")
 	implementation("org.springframework.boot:spring-boot-starter-validation")
 	implementation("org.springframework.boot:spring-boot-starter-web")
+	implementation("org.springdoc:springdoc-openapi-starter-webmvc-ui:2.3.0")
 	compileOnly("org.projectlombok:lombok")
 	developmentOnly("org.springframework.boot:spring-boot-devtools")
 	runtimeOnly("com.h2database:h2")
@@ -41,3 +42,5 @@ tasks.withType<Test> {
 tasks.check{
 	dependsOn(tasks.named<JacocoReport>("testCodeCoverageReport"))
 }
+
+
