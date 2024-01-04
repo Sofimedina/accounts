@@ -26,7 +26,11 @@ import org.springframework.data.jpa.repository.config.EnableJpaAuditing;
 
 				        )
 
-                )
+                ),
+		externalDocs = @ExternalDocumentation(
+				description =  "some desc ext",
+				url = "https://www.example.com/"
+		)
 		)
 public class AccountsApplication {
 

@@ -1,5 +1,6 @@
 package com.skm.accounts.dto;
 
+import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.persistence.Id;
 import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.Pattern;
@@ -7,12 +8,28 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 
 @Data
+@Schema(
+        name = "Accounts",
+        description = "Schema to hold Account information"
+)
 public class AccountsDto {
+
     @NotEmpty(message = "Account number can not be null or empty")
     @Pattern(regexp ="(^$|[0-9]{10})" ,message = "Account number should contain 10 digits")
+    @Schema(
+            description = "Account Number of Eazy Bank account", example = "3454433243"
+    )
     private Long accountNumber;
+
     @NotEmpty(message = "Account Type number can not be null or empty")
+    @Schema(
+            description = "Account type of Eazy Bank account", example = "Savings"
+    )
     private String accountType;
+
+    @Schema(
+            description = "Eazy Bank branch address", example = "123 NewYork"
+    )
     @NotEmpty(message = "Branch address can not be null or empty")
     private String branchAddress;
 
