@@ -31,7 +31,7 @@ public class CustomerDto {
     @Schema(
             description = "Mobile Number of the customer", example = "9345432123"
     )
-    @Pattern(regexp ="(^$|[0-9]{10})" ,message = "Number shoul contain 10 digits")
+    @Pattern(regexp ="(^$|[0-9]{10})" ,message = "Number should contain 10 digits")
     private String mobileNumber;
 
     @Schema(
