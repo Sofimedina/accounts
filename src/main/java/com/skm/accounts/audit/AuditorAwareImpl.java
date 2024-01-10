@@ -1,5 +1,6 @@
 package com.skm.accounts.audit;
 
+import org.springframework.context.annotation.Primary;
 import org.springframework.data.domain.AuditorAware;
 import org.springframework.stereotype.Component;
 
