@@ -10,7 +10,7 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.data.jpa.repository.config.EnableJpaAuditing;
 
 @SpringBootApplication
-@EnableJpaAuditing(auditorAwareRef = "auditorAwareImpl")
+//@EnableJpaAuditing(auditorAwareRef = "auditorAwareImpl")
 @OpenAPIDefinition(
 		info=@Info(
 				title = "Account ms REST api docs",
