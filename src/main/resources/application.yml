@@ -16,4 +16,13 @@ spring:
     show-sql: true
 build:
   version: "1.0"
+accounts:
+  message: "Welcome to ... accounts related local api"
+  contactDetails:
+    name: "Sofia Medina"
+    email: "sofi.k.medina@gmail.com"
+  onCallSupport:
+    - 3875121101
+    - 3875421110
+
 
