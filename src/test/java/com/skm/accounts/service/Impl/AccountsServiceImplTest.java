@@ -40,7 +40,7 @@ class AccountsServiceImplTest {
         customerDto.setName("Sofia");
         customerDto.setEmail("sofi.k.medina");
         customerDto.setMobileNumber("3875121101");
-        accountsDto=new AccountsDto();
+        accountsDto = new AccountsDto();
         customerDto.setAccountsDto(accountsDto);
     }
 
